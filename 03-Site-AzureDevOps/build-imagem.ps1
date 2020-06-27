@@ -1,0 +1,1 @@
+docker build . -t site-azuredevops-minicurso:1.0

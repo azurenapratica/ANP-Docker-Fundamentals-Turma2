@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  srv-postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "Postgres2020!"
+    ports:
+      - "15432:5432"
+    networks:
+      - databases
+      
+  web-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "renatogroff@yahoo.com.br"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+    ports:
+      - "15433:80"
+    depends_on:
+      - srv-postgres
+    networks:
+      - databases
+
+networks: 
+    databases:
+      driver: bridge

@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  mysqlsrv:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "MySql2020!"
+      MYSQL_DATABASE: "testedb"
+    ports:
+      - "3306:3306"
+    networks:
+      - databases
+
+  adminer:
+    image: adminer
+    ports:
+      - "3307:8080"
+    depends_on:
+      - mysqlsrv
+    networks:
+      - databases
+
+networks: 
+    databases:
+      driver: bridge

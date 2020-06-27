@@ -1,0 +1,29 @@
+name: Azure Container Registry
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Login no Azure Container Registry
+      uses: Azure/docker-login@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        login-server: ${{ secrets.DOCKER_CONTAINER_REGISTRY }}
+
+    - name: Build e Push no Azure Container Registry
+      run: |
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ secrets.NOME_IMAGEM }}:$GITHUB_RUN_NUMBER
+        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ secrets.NOME_IMAGEM }}:$GITHUB_RUN_NUMBER ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ secrets.NOME_IMAGEM }}:latest
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ secrets.NOME_IMAGEM }}

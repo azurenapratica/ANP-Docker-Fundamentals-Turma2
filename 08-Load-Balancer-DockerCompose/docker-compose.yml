@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  proxy:
+    image: apicontagem-lb-nginx
+    build:
+      context: .
+    ports:
+      - "20000:80"
+    depends_on:
+      - apicontagem01
+      - apicontagem02
+    networks:
+      - apicontagem-compose-network
+  
+  apicontagem01:
+    image: azurenapratica/apicontagem
+    ports:
+      - "20001:80"
+    environment:
+      TesteAmbiente: API 01
+    networks:
+      - apicontagem-compose-network
+  
+  apicontagem02:
+    image: azurenapratica/apicontagem
+    ports:
+      - "20002:80"
+    environment:
+      TesteAmbiente: API 02
+    networks:
+      - apicontagem-compose-network
+
+networks: 
+    apicontagem-compose-network:
+      driver: bridge
